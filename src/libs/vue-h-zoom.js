@@ -56,6 +56,7 @@ export default {
       this.visibleZoom = false
     },
     followMouse: function (e) {
+      this.$refs.thumbnail.offsetTopLeft
       this.pointer = {
         x: e.pageX - this.$refs.thumbnail.getBoundingClientRect().left - window.scrollX,
         y: e.pageY - this.$refs.thumbnail.getBoundingClientRect().top - window.scrollY
@@ -64,8 +65,8 @@ export default {
     updateThumbnailPos: function () {
       const el = this.$refs.thumbnail
       this.thumbnailPos = {
-        top: el.offsetTop,
-        left: el.offsetLeft
+        top: 0,
+        left: 0
       }
     }
   },
@@ -79,7 +80,9 @@ export default {
     thumbnailStyle: function () {
       return {
         'background-image': `url(${this.image})`,
-        'background-size': 'cover',
+        'background-size': 'contain',
+        'background-repeat': 'no-repeat',
+        'background-position': 'center',
         height: this.toPx(this.height),
         width: this.toPx(this.width)
       }
@@ -98,6 +101,7 @@ export default {
     zoomPosX: function () {
       const xPad = this.width / 2
       const posX = -(this.pointer.x - this.thumbnailPos.left - xPad) * this.zoomWindowSize
+
       if (posX > this.pointerEdgeX) return this.pointerEdgeX
       if (posX < (this.pointerEdgeX * -1)) return (this.pointerEdgeX * -1)
       return posX
@@ -114,7 +118,7 @@ export default {
         'background-image': `url(${this.largeImage})`,
         'background-repeat': 'no-repeat',
         'background-position': this.toPx(this.zoomPosX) + ' ' + this.toPx(this.zoomPosY),
-        'background-size': 'cover',
+        'background-size': 'contain',
         width: '100%',
         height: '100%',
         '-webkit-transform': `scale(${this.zoomLevel})`,
@@ -137,6 +141,7 @@ export default {
       const left = this.pointer.x - (this.pointerWidth / 2) - this.thumbnailPos.left
       if (left < 0) return 0
       if (left > (this.width - this.pointerWidth)) return (this.width - this.pointerWidth)
+      
       return left
     },
     pointerEdgeX: function () {

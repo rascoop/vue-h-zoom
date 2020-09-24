@@ -91,6 +91,8 @@
     "test:cover": "cross-env BABEL_ENV=test karma start config/karma.cover.conf.js",
     "test:cover-upload": "npm run test:cover && codecov",
     "test:unit": "cross-env BABEL_ENV=test karma start config/karma.unit.conf.js",
-    "build": "rm -rf dist/*.js* && webpack --config config/webpack.prod.conf.js"
+    "build": "rm -rf dist/*.js* && webpack --config config/webpack.prod.conf.js",
+    "build-bundle": "vue-cli-service build --target lib --name vue-h-zoom ./src/libs/VueHZoom.vue && rm dist/demo.html"
+
   }
 }
